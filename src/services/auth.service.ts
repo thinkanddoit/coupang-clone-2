@@ -1,5 +1,4 @@
-import cookies from "js-cookie";
-import { AxiosUtil } from "../utils";
+import { AxiosUtil, TokenUtil } from "../utils";
 
 type SignupAgreements = {
   /** 만 14세 이상입니다 */
@@ -23,9 +22,15 @@ type SignupAgreements = {
 };
 
 class AuthService {
+  /** accessToken 1일, refreshToken 7일로 설정하는 공통 로직, 함수화 */
+  private setAllToken(data: any) {
+    TokenUtil.set("access", data.access, 1);
+    TokenUtil.set("refresh", data.refresh, 7);
+  }
+
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
-    const refreshToken = cookies.get("refreshToken");
+    const refreshToken = TokenUtil.get("refresh");
     if (!refreshToken) {
       return;
     }
@@ -35,8 +40,7 @@ class AuthService {
       null
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setAllToken(data);
   }
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
@@ -52,8 +56,7 @@ class AuthService {
       { email, password, name, phoneNumber, agreements }
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setAllToken(data);
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
@@ -63,8 +66,7 @@ class AuthService {
       { email, password }
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setAllToken(data);
   }
 }
 

@@ -1,9 +1,8 @@
-import cookies from "js-cookie";
-import { AxiosUtil } from "../utils";
+import { AxiosUtil, TokenUtil } from "../utils";
 
 class UserService {
   async me() {
-    const accessToken = cookies.get("accessToken");
+    const accessToken = TokenUtil.get("access");
     if (!accessToken) {
       return;
     }
