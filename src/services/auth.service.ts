@@ -25,11 +25,7 @@ class AuthService {
       return;
     }
     AxiosUtil.setDefaultHeader(refreshToken);
-    const { data } = await AxiosUtil.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/refresh",
-      null
-    );
-
+    const { data } = await AxiosUtil.post("/auth/refresh", null);
     this.setAllToken(data);
   }
 
@@ -41,21 +37,19 @@ class AuthService {
     phoneNumber: string,
     agreements: SignupAgreements
   ) {
-    const { data } = await AxiosUtil.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/signup",
-      { email, password, name, phoneNumber, agreements }
-    );
-
+    const { data } = await AxiosUtil.post("/auth/signup", {
+      email,
+      password,
+      name,
+      phoneNumber,
+      agreements,
+    });
     this.setAllToken(data);
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
   async login(email: string, password: string) {
-    const { data } = await AxiosUtil.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/login",
-      { email, password }
-    );
-
+    const { data } = await AxiosUtil.post("/auth/login", { email, password });
     this.setAllToken(data);
   }
 }
