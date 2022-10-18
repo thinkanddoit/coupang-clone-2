@@ -1,13 +1,9 @@
-import { AxiosUtil, TokenUtil } from "../utils";
+import { AxiosUtil } from "../utils";
+import Service from "./service";
 
-class UserService {
+class UserService extends Service {
   async me() {
-    const accessToken = TokenUtil.get("access");
-    if (!accessToken) {
-      return;
-    }
-    AxiosUtil.setDefaultHeader(accessToken);
-
+    super.setAxiosDefaultHeader("access");
     const { data } = await AxiosUtil.get("/users/me");
 
     return data;
