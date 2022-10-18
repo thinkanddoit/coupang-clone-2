@@ -8,17 +8,13 @@ class UserService {
     }
     AxiosUtil.setDefaultHeader(accessToken);
 
-    const { data } = await AxiosUtil.get(
-      process.env.NEXT_PUBLIC_API_HOST + "/users/me"
-    );
+    const { data } = await AxiosUtil.get("/users/me");
 
     return data;
   }
 
   async read(id: number) {
-    const { data } = await AxiosUtil.get(
-      process.env.NEXT_PUBLIC_API_HOST + "/users/" + id
-    );
+    const { data } = await AxiosUtil.get("/users/" + id);
 
     return data;
   }
