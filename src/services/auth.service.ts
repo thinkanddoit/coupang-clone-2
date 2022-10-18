@@ -1,5 +1,5 @@
-import axios from "axios";
 import cookies from "js-cookie";
+import { AxiosUtil } from "../utils";
 
 type SignupAgreements = {
   /** 만 14세 이상입니다 */
@@ -29,15 +29,10 @@ class AuthService {
     if (!refreshToken) {
       return;
     }
-
-    const { data } = await axios.post(
+    AxiosUtil.setDefaultHeader(refreshToken);
+    const { data } = await AxiosUtil.post(
       process.env.NEXT_PUBLIC_API_HOST + "/auth/refresh",
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      }
+      null
     );
 
     cookies.set("accessToken", data.access, { expires: 1 });
@@ -52,7 +47,7 @@ class AuthService {
     phoneNumber: string,
     agreements: SignupAgreements
   ) {
-    const { data } = await axios.post(
+    const { data } = await AxiosUtil.post(
       process.env.NEXT_PUBLIC_API_HOST + "/auth/signup",
       { email, password, name, phoneNumber, agreements }
     );
@@ -63,7 +58,7 @@ class AuthService {
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
   async login(email: string, password: string) {
-    const { data } = await axios.post(
+    const { data } = await AxiosUtil.post(
       process.env.NEXT_PUBLIC_API_HOST + "/auth/login",
       { email, password }
     );
