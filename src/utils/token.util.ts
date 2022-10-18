@@ -1,17 +1,17 @@
 import cookies from "js-cookie";
 
-type Type = "access" | "refresh";
+export type TokenType = "access" | "refresh";
 
 class TokenUtil {
-  get(type: Type) {
+  get(type: TokenType) {
     return cookies.get(`${type}Token`);
   }
 
-  set(type: Type, token: string, expires: number) {
+  set(type: TokenType, token: string, expires: number) {
     cookies.set(`${type}Token`, token, { expires: expires });
   }
 
-  has(type: Type) {
+  has(type: TokenType) {
     return !!cookies.get(`${type}Token`);
   }
 
