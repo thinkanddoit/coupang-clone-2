@@ -1,8 +1,9 @@
+import { UserInfo } from "../types/userInfo";
 import { AxiosUtil } from "../utils";
 import Service from "./service";
 
 class UserService extends Service {
-  async me() {
+  async me(): Promise<UserInfo> {
     super.setAxiosDefaultHeader("access");
     const { data } = await AxiosUtil.get("/users/me");
 

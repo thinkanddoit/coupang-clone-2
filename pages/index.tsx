@@ -1,18 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useQuery } from "react-query";
-
-import { UserService } from "../src/services";
+import { useMe } from "../src/hooks/reactQuery/useMe";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { data: me } = useQuery("me", UserService.me, {
-    refetchInterval: 500,
-  });
+  const { isLoading, isError, error, data } = useMe();
 
-  console.log("내 정보입니다", me);
+  if (isLoading) return <>Loadiing...</>;
+  if (isError) console.log(error);
 
   return (
     <div className={styles.container}>
@@ -23,13 +20,11 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Hello World!</h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>src/services</code>,
-          <code className={styles.code}>src/hooks</code>
-        </p>
+        <h1 className={styles.title}>유저 정보</h1>
+        <p>{data?.id}</p>
+        <p>{data?.name}</p>
+        <p>{data?.email}</p>
+        <p>{data?.phoneNumber}</p>
       </main>
 
       <footer className={styles.footer}>
